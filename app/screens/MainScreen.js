@@ -2,7 +2,15 @@
  * @flow
  */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  ImageBackground,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import MapView from 'react-native-maps';
 import { List, ListItem, Button } from 'react-native-elements';
 
@@ -21,49 +29,56 @@ class MainScreen extends Component {
 
   constructor(props) {
     super(props);
+  }
 
-    this.state = {
-      region: {
-        latitude: LATITUDE,
-        longitude: LONGITUDE,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
-      },
-    };
+  navigateTo() {
+    this.props.navigation.navigate('Request');
+  }
+
+  renderBox(item) {
+    return (
+      <TouchableOpacity key={item.key} onPress={() => this.navigateTo()}>
+        <ImageBackground
+          style={{
+            width: deviceWidth / 2,
+            height: 200,
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+          }}
+          source={{ uri: item.url }}
+        >
+          <Text style={{ marginBottom: 10 }}>
+            {item.title}
+          </Text>
+        </ImageBackground>
+      </TouchableOpacity>
+    );
   }
 
   render() {
+    const list = [
+      { key: '@1', title: '블루스퀘어 삼성점', url: 'https://unsplash.it/200/300?random' },
+      { key: '@2', title: 'LG 아트 센터', url: 'https://unsplash.it/200/300?random' },
+      { key: '@3', title: '세종 문화 회관', url: 'https://unsplash.it/200/300?random' },
+      { key: '@4', title: '예술의 전당', url: 'https://unsplash.it/200/300?random' },
+      { key: '@5', title: '테스트1', url: 'https://unsplash.it/200/300?random' },
+      { key: '@6', title: '테스트2', url: 'https://unsplash.it/200/300?random' },
+      { key: '@7', title: '테스트3', url: 'https://unsplash.it/200/300?random' },
+      { key: '@8', title: '테스트4', url: 'https://unsplash.it/200/300?random' },
+    ];
+
     return (
-      <View style={styles.container}>
-        <MapView
-          provider={this.props.provider}
-          style={styles.map}
-          scrollEnabled={true}
-          zoomEnabled={true}
-          pitchEnabled={true}
-          rotateEnabled={false}
-          initialRegion={this.state.region}
-        >
-          <MapView.Marker
-            title="This is a title"
-            description="This is a description"
-            coordinate={this.state.region}
-          />
-        </MapView>
-
-        <List containerStyle={{ marginTop: 0 }}>
-          <ListItem title={'차량 정보'} />
-          <ListItem title={'카드 정보'} />
-        </List>
-
-        <Button
-          buttonStyle={{ marginRight: 0, marginLeft: 0 }}
-          disabled
-          raised
-          large
-          title={'요청하기'}
-        />
-      </View>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={{
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+        }}
+      >
+        {list.map(item => {
+          return this.renderBox(item);
+        })}
+      </ScrollView>
     );
   }
 }
