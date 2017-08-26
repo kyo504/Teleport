@@ -17,10 +17,99 @@ import { List, ListItem, Button } from 'react-native-elements';
 const { width: deviceWidth, height: deviceHeight } = Dimensions.get('window');
 
 const ASPECT_RATIO = deviceWidth / deviceHeight;
-const LATITUDE = 37.400373;
-const LONGITUDE = 127.104913;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+
+const mock = [
+  {
+    key: '@1',
+    title: '블루스퀘어 삼성점',
+    source: require('../../assets/image-artcenter.jpg'),
+    region: {
+      latitude: 37.400339,
+      longitude: 127.104967,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA,
+    },
+  },
+  {
+    key: '@2',
+    title: 'LG 아트 센터',
+    source: require('../../assets/image-blursquare.jpg'),
+    region: {
+      latitude: 37.502515,
+      longitude: 127.037543,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA,
+    },
+  },
+  {
+    key: '@3',
+    title: '세종 문화 회관',
+    source: require('../../assets/image-lgartcenter.jpg'),
+    region: {
+      latitude: 37.572806,
+      longitude: 126.975589,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA,
+    },
+  },
+  {
+    key: '@4',
+    title: '예술의 전당',
+    source: require('../../assets/image-sejong.jpg'),
+    region: {
+      latitude: 37.478988,
+      longitude: 127.011835,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA,
+    },
+  },
+  {
+    key: '@5',
+    title: '블루스퀘어 삼성점',
+    source: require('../../assets/image-artcenter.jpg'),
+    region: {
+      latitude: 37.400339,
+      longitude: 127.104967,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA,
+    },
+  },
+  {
+    key: '@6',
+    title: 'LG 아트 센터',
+    source: require('../../assets/image-blursquare.jpg'),
+    region: {
+      latitude: 37.400339,
+      longitude: 127.104967,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA,
+    },
+  },
+  {
+    key: '@7',
+    title: '세종 문화 회관',
+    source: require('../../assets/image-lgartcenter.jpg'),
+    region: {
+      latitude: 37.400339,
+      longitude: 127.104967,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA,
+    },
+  },
+  {
+    key: '@8',
+    title: '예술의 전당',
+    source: require('../../assets/image-sejong.jpg'),
+    region: {
+      latitude: 37.400339,
+      longitude: 127.104967,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA,
+    },
+  },
+];
 
 class MainScreen extends Component {
   static navigationOptions = () => ({
@@ -31,13 +120,13 @@ class MainScreen extends Component {
     super(props);
   }
 
-  navigateTo() {
-    this.props.navigation.navigate('Request');
+  navigateTo(item) {
+    this.props.navigation.navigate('Request', item);
   }
 
   renderBox(item) {
     return (
-      <TouchableOpacity key={item.key} onPress={() => this.navigateTo()}>
+      <TouchableOpacity key={item.key} onPress={() => this.navigateTo(item)}>
         <ImageBackground
           style={{
             width: deviceWidth / 2,
@@ -45,7 +134,7 @@ class MainScreen extends Component {
             alignItems: 'center',
             justifyContent: 'flex-end',
           }}
-          source={{ uri: item.url }}
+          source={item.source}
         >
           <Text style={{ marginBottom: 10 }}>
             {item.title}
@@ -56,17 +145,6 @@ class MainScreen extends Component {
   }
 
   render() {
-    const list = [
-      { key: '@1', title: '블루스퀘어 삼성점', url: 'https://unsplash.it/200/300?random' },
-      { key: '@2', title: 'LG 아트 센터', url: 'https://unsplash.it/200/300?random' },
-      { key: '@3', title: '세종 문화 회관', url: 'https://unsplash.it/200/300?random' },
-      { key: '@4', title: '예술의 전당', url: 'https://unsplash.it/200/300?random' },
-      { key: '@5', title: '테스트1', url: 'https://unsplash.it/200/300?random' },
-      { key: '@6', title: '테스트2', url: 'https://unsplash.it/200/300?random' },
-      { key: '@7', title: '테스트3', url: 'https://unsplash.it/200/300?random' },
-      { key: '@8', title: '테스트4', url: 'https://unsplash.it/200/300?random' },
-    ];
-
     return (
       <ScrollView
         style={styles.container}
@@ -75,7 +153,7 @@ class MainScreen extends Component {
           flexWrap: 'wrap',
         }}
       >
-        {list.map(item => {
+        {mock.map(item => {
           return this.renderBox(item);
         })}
       </ScrollView>

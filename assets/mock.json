@@ -1,0 +1,75 @@
+{
+	"list": [{
+			"key": "@1",
+			"title": "블루스퀘어 삼성점",
+			"path": "../../assets/image-artcenter.jpg",
+			"region": {
+				"latitude": "37.400339",
+				"longitude": "127.104967"
+			}
+		},
+		{
+			"key": "@2",
+			"title": "LG 아트 센터",
+			"path": "../../assets/image-blursquare.jpg",
+			"region": {
+				"latitude": "37.400339",
+				"longitude": "127.104967"
+			}
+		},
+		{
+			"key": "@3",
+			"title": "세종 문화 회관",
+			"path": "../../assets/image-lgartcenter.jpg",
+			"region": {
+				"latitude": "37.400339",
+				"longitude": "127.104967"
+			}
+		},
+		{
+			"key": "@4",
+			"title": "예술의 전당",
+			"path": "../../assets/image-sejong.jpg",
+			"region": {
+				"latitude": "37.400339",
+				"longitude": "127.104967"
+			}
+    },
+    {
+			"key": "@5",
+			"title": "블루스퀘어 삼성점",
+			"path": "../../assets/image-artcenter.jpg",
+			"region": {
+				"latitude": "37.400339",
+				"longitude": "127.104967"
+			}
+		},
+		{
+			"key": "@6",
+			"title": "LG 아트 센터",
+			"path": "../../assets/image-blursquare.jpg",
+			"region": {
+				"latitude": "37.400339",
+				"longitude": "127.104967"
+			}
+		},
+		{
+			"key": "@7",
+			"title": "세종 문화 회관",
+			"path": "../../assets/image-lgartcenter.jpg",
+			"region": {
+				"latitude": "37.400339",
+				"longitude": "127.104967"
+			}
+		},
+		{
+			"key": "@8",
+			"title": "예술의 전당",
+			"path": "../../assets/image-sejong.jpg",
+			"region": {
+				"latitude": "37.400339",
+				"longitude": "127.104967"
+			}
+		}    
+	]
+}

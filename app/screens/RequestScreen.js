@@ -2,9 +2,10 @@
  * @flow
  */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, TouchableWithoutFeedback } from 'react-native';
 import MapView from 'react-native-maps';
 import { List, ListItem, Button } from 'react-native-elements';
+import ProgressView from '../ProgressView';
 
 const { width: deviceWidth, height: deviceHeight } = Dimensions.get('window');
 
@@ -22,66 +23,79 @@ class RequestScreen extends Component {
   constructor(props) {
     super(props);
 
+    const { params } = props.navigation.state;
+
+    console.log(...params.region);
+
     this.state = {
-      region: {
-        latitude: LATITUDE,
-        longitude: LONGITUDE,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
-      },
+      region: params.region,
     };
+  }
+
+  navigateTo(routeName) {
+    this.props.navigation.navigate(routeName);
   }
 
   render() {
     const { params } = this.props.navigation.state;
+    const {
+      title
+    } = params;
 
     return (
       <View style={styles.container}>
-        <MapView
-          provider={this.props.provider}
-          style={styles.map}
-          scrollEnabled={false}
-          zoomEnabled={false}
-          pitchEnabled={false}
-          rotateEnabled={false}
-          initialRegion={this.state.region}
-        >
-          <MapView.Marker
-            title="This is a title"
-            description="This is a description"
-            coordinate={this.state.region}
-          />
-        </MapView>
+        <TouchableWithoutFeedback onPress={() => this.navigateTo('Map')}>
+          <MapView
+            provider={this.props.provider}
+            style={styles.map}
+            scrollEnabled={false}
+            zoomEnabled={false}
+            pitchEnabled={false}
+            rotateEnabled={false}
+            initialRegion={this.state.region}
+          >
+            <MapView.Marker
+              title="This is a title"
+              description="This is a description"
+              coordinate={this.state.region}
+            />
+          </MapView>
+        </TouchableWithoutFeedback>
 
-        <List containerStyle={{ marginTop: 0 }}>
-          <ListItem
-            title={`목적지점   ${'예술의 전당'}`}
-            leftIcon={{ name: 'directions-car' }}
-            rightIcon={{ name: 'search' }}
-            onPress={() => alert('차량 정보')}
-          />
-          <ListItem
-            title={`하차지점   ${'이태원로 25'}`}
-            leftIcon={{ name: 'pin-drop' }}
-            rightIcon={{ name: 'search' }}
-            onPress={() => alert('차량 정보')}
-          />
-        </List>
+        <View style={{ flex: 1, justifyContent: 'space-between' }}>
+          <View>
+            <List containerStyle={{ marginTop: 0 }}>
+              <ListItem
+                title={`${title}`}
+                leftIcon={{ name: 'directions-car' }}
+                rightIcon={{ name: 'search' }}
+                onPress={() => alert('차량 정보')}
+              />
+              <ListItem
+                title={`${'이태원로 25'}`}
+                leftIcon={{ name: 'pin-drop' }}
+                rightIcon={{ name: 'search' }}
+                onPress={() => alert('차량 정보')}
+              />
+            </List>
 
-        <List>
-          <ListItem title={'차량 정보'} onPress={() => alert('차량 정보')} />
-          <ListItem title={'카드 정보'} />
-          <ListItem title={'옵션'} />
-        </List>
-        <View />
+            <List containerStyle={{ marginTop: 10 }}>
+              <ListItem title={'차량 정보'} onPress={() => alert('차량 정보')} />
+              <ListItem title={'카드 정보'} />
+              <ListItem title={'옵션'} />
+            </List>
+            <View />
+          </View>
+          <Button
+            containerViewStyle={{ marginRight: 0, marginLeft: 0 }}
+            raised
+            large
+            title={'요청하기'}
+            onPress={() => this.progressRef.show()}
+          />
+        </View>
 
-        <Button
-          containerViewStyle={{ marginRight: 0, marginLeft: 0 }}
-          disabled
-          raised
-          large
-          title={'요청하기'}
-        />
+        <ProgressView ref={c => (this.progressRef = c)} />
       </View>
     );
   }
@@ -93,7 +107,7 @@ const styles = StyleSheet.create({
   },
   map: {
     width: deviceWidth,
-    height: 200,
+    height: 180,
   },
 });
 
