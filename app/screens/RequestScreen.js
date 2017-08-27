@@ -3,7 +3,7 @@
  */
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Dimensions, TouchableWithoutFeedback } from 'react-native';
-import MapView from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { List, ListItem, Button } from 'react-native-elements';
 import ProgressView from '../ProgressView';
 
@@ -25,42 +25,56 @@ class RequestScreen extends Component {
 
     const { params } = props.navigation.state;
 
-    console.log(...params.region);
-
     this.state = {
-      region: params.region,
+      coordDest: params.coordinate,
+      coordDropOff: params.coordinate,
     };
   }
 
-  navigateTo(routeName) {
-    this.props.navigation.navigate(routeName);
+  componentWillMount() {
+
+    fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=37.566535,126.977969&language=ko`)
+    .then(res => res.json())
+    .then(json => console.log(json))
+    .catch(e => alert(e))
+    
+  }
+
+  navigateTo(routeName, coordinate) {
+    const params = {
+      coordinates: {
+        ...this.state,
+      },
+      onUpdateCoordinates: this.onUpdateCoordinates,
+    };
+    console.log(params);
+    this.props.navigation.navigate(routeName, params);
+  }
+
+  onUpdateCoordinates = (coords) => {
+    this.setState({ ...coords });
   }
 
   render() {
+    const { coordDest, coordDropOff } = this.state;
     const { params } = this.props.navigation.state;
-    const {
-      title
-    } = params;
+    const { title, coordinate } = params;
 
     return (
       <View style={styles.container}>
-        <TouchableWithoutFeedback onPress={() => this.navigateTo('Map')}>
-          <MapView
-            provider={this.props.provider}
-            style={styles.map}
-            scrollEnabled={false}
-            zoomEnabled={false}
-            pitchEnabled={false}
-            rotateEnabled={false}
-            initialRegion={this.state.region}
-          >
-            <MapView.Marker
-              title="This is a title"
-              description="This is a description"
-              coordinate={this.state.region}
-            />
-          </MapView>
-        </TouchableWithoutFeedback>
+        <MapView
+          provider={PROVIDER_GOOGLE}
+          style={styles.map}
+          scrollEnabled={false}
+          zoomEnabled={false}
+          pitchEnabled={false}
+          rotateEnabled={false}
+          region={coordDest}
+          onPress={() => this.navigateTo('Map')}
+        >
+          <MapView.Marker title="목적지점" coordinate={coordDest} />
+          <MapView.Marker title="하차지점" pinColor={'blue'} coordinate={coordDropOff} />
+        </MapView>
 
         <View style={{ flex: 1, justifyContent: 'space-between' }}>
           <View>

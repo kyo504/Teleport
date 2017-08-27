@@ -11,13 +11,12 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import MapView from 'react-native-maps';
 import { List, ListItem, Button } from 'react-native-elements';
 
 const { width: deviceWidth, height: deviceHeight } = Dimensions.get('window');
 
 const ASPECT_RATIO = deviceWidth / deviceHeight;
-const LATITUDE_DELTA = 0.0922;
+const LATITUDE_DELTA = 0.003;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 const mock = [
@@ -25,9 +24,9 @@ const mock = [
     key: '@1',
     title: '블루스퀘어 삼성점',
     source: require('../../assets/image-artcenter.jpg'),
-    region: {
-      latitude: 37.400339,
-      longitude: 127.104967,
+    coordinate: {
+      latitude: 37.541195,
+      longitude: 127.002462,
       latitudeDelta: LATITUDE_DELTA,
       longitudeDelta: LONGITUDE_DELTA,
     },
@@ -36,7 +35,7 @@ const mock = [
     key: '@2',
     title: 'LG 아트 센터',
     source: require('../../assets/image-blursquare.jpg'),
-    region: {
+    coordinate: {
       latitude: 37.502515,
       longitude: 127.037543,
       latitudeDelta: LATITUDE_DELTA,
@@ -47,7 +46,7 @@ const mock = [
     key: '@3',
     title: '세종 문화 회관',
     source: require('../../assets/image-lgartcenter.jpg'),
-    region: {
+    coordinate: {
       latitude: 37.572806,
       longitude: 126.975589,
       latitudeDelta: LATITUDE_DELTA,
@@ -58,7 +57,7 @@ const mock = [
     key: '@4',
     title: '예술의 전당',
     source: require('../../assets/image-sejong.jpg'),
-    region: {
+    coordinate: {
       latitude: 37.478988,
       longitude: 127.011835,
       latitudeDelta: LATITUDE_DELTA,
@@ -69,9 +68,9 @@ const mock = [
     key: '@5',
     title: '블루스퀘어 삼성점',
     source: require('../../assets/image-artcenter.jpg'),
-    region: {
-      latitude: 37.400339,
-      longitude: 127.104967,
+    coordinate: {
+      latitude: 37.541195,
+      longitude: 127.002462,
       latitudeDelta: LATITUDE_DELTA,
       longitudeDelta: LONGITUDE_DELTA,
     },
@@ -80,7 +79,7 @@ const mock = [
     key: '@6',
     title: 'LG 아트 센터',
     source: require('../../assets/image-blursquare.jpg'),
-    region: {
+    coordinate: {
       latitude: 37.400339,
       longitude: 127.104967,
       latitudeDelta: LATITUDE_DELTA,
@@ -91,7 +90,7 @@ const mock = [
     key: '@7',
     title: '세종 문화 회관',
     source: require('../../assets/image-lgartcenter.jpg'),
-    region: {
+    coordinate: {
       latitude: 37.400339,
       longitude: 127.104967,
       latitudeDelta: LATITUDE_DELTA,
@@ -102,7 +101,7 @@ const mock = [
     key: '@8',
     title: '예술의 전당',
     source: require('../../assets/image-sejong.jpg'),
-    region: {
+    coordinate: {
       latitude: 37.400339,
       longitude: 127.104967,
       latitudeDelta: LATITUDE_DELTA,

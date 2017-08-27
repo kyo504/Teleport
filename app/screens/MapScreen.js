@@ -1,95 +1,77 @@
 import React from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  Dimensions,
-  ScrollView,
-} from 'react-native';
-import MapView from 'react-native-maps';
+import { StyleSheet, View, Text, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import { NavigationActions } from 'react-navigation';
 
 const { width, height } = Dimensions.get('window');
 
-const ASPECT_RATIO = width / height;
-const LATITUDE = 37.78825;
-const LONGITUDE = -122.4324;
-const LATITUDE_DELTA = 0.0922;
-const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
-
 class MapScreen extends React.Component {
+  static navigationOptions = ({ navigation }) => {
+    const { state } = navigation;
+    const { renderHeaderRight } = state.params;
+    return {
+      title: '하차지점',
+      headerRight: renderHeaderRight && renderHeaderRight(),
+    };
+  };
+
   constructor(props) {
     super(props);
 
+    const { coordinates } = props.navigation.state.params;
     this.state = {
-      region: {
-        latitude: LATITUDE,
-        longitude: LONGITUDE,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
-      },
+      newCoord: coordinates.coordDropOff,
     };
   }
 
+  componentWillMount() {
+    this.props.navigation.setParams({
+      renderHeaderRight: this.renderHeaderRight,
+    });
+  }
+
+  renderHeaderRight = () => {
+    return (
+      <TouchableOpacity style={{ paddingHorizontal: 15 }} onPress={() => this.navigateBack()}>
+        <Text>설정</Text>
+      </TouchableOpacity>
+    );
+  };
+
+  navigateBack() {
+    const { navigation } = this.props;
+    navigation.goBack(null);
+    navigation.state.params.onUpdateCoordinates({
+      coordDropOff: this.state.newCoord,
+    });
+  }
+
   render() {
+    const { params } = this.props.navigation.state;
+    const { coordDest } = params.coordinates;
+    const { newCoord } = this.state;
+
     return (
       <View style={styles.container}>
-        <ScrollView
-          style={StyleSheet.absoluteFill}
-          contentContainerStyle={styles.scrollview}
+        <MapView
+          provider={PROVIDER_GOOGLE}
+          style={styles.map}
+          scrollEnabled={true}
+          zoomEnabled={true}
+          pitchEnabled={true}
+          rotateEnabled={true}
+          region={coordDest}
+          showsMyLocationButton
         >
-          <Text>Clicking</Text>
-          <Text>and</Text>
-          <Text>dragging</Text>
-          <Text>the</Text>
-          <Text>map</Text>
-          <Text>will</Text>
-          <Text>cause</Text>
-          <Text>the</Text>
-          <MapView
-            provider={this.props.provider}
-            style={styles.map}
-            scrollEnabled={false}
-            zoomEnabled={false}
-            pitchEnabled={false}
-            rotateEnabled={false}
-            initialRegion={this.state.region}
-          >
-            <MapView.Marker
-              title="This is a title"
-              description="This is a description"
-              coordinate={this.state.region}
-            />
-          </MapView>
-          <Text>parent</Text>
-          <Text>ScrollView</Text>
-          <Text>to</Text>
-          <Text>scroll.</Text>
-          <Text>When</Text>
-          <Text>using</Text>
-          <Text>a Google</Text>
-          <Text>Map</Text>
-          <Text>this only</Text>
-          <Text>works</Text>
-          <Text>if you</Text>
-          <Text>disable:</Text>
-          <Text>scroll,</Text>
-          <Text>zoom,</Text>
-          <Text>pitch,</Text>
-          <Text>rotate.</Text>
-          <Text>...</Text>
-          <Text>It</Text>
-          <Text>would</Text>
-          <Text>be</Text>
-          <Text>nice</Text>
-          <Text>to</Text>
-          <Text>have</Text>
-          <Text>an</Text>
-          <Text>option</Text>
-          <Text>that</Text>
-          <Text>still</Text>
-          <Text>allows</Text>
-          <Text>zooming.</Text>
-        </ScrollView>
+          <MapView.Marker title="목적지점" coordinate={coordDest} />
+          <MapView.Marker
+            title="하차지점"
+            pinColor={'blue'}
+            draggable
+            coordinate={newCoord}
+            onDragEnd={e => this.setState({ newCoord: e.nativeEvent.coordinate })}
+          />
+        </MapView>
       </View>
     );
   }
@@ -110,8 +92,8 @@ const styles = StyleSheet.create({
     paddingVertical: 40,
   },
   map: {
-    width: 250,
-    height: 250,
+    width: width,
+    height: height - 64,
   },
 });
 
