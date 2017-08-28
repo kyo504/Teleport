@@ -4,7 +4,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Dimensions, TouchableWithoutFeedback } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
-import { List, ListItem, Button } from 'react-native-elements';
+import { List, ListItem, Button, Icon } from 'react-native-elements';
 import ProgressView from '../ProgressView';
 
 const { width: deviceWidth, height: deviceHeight } = Dimensions.get('window');
@@ -55,6 +55,14 @@ class RequestScreen extends Component {
     this.setState({ ...coords });
   }
 
+  onRequest() {
+    this.progressRef.show()
+    setTimeout(() => {
+      this.progressRef.hide();
+      this.props.navigation.navigate('Confirm');
+    }, 3000); 
+  }
+
   render() {
     const { coordDest, coordDropOff } = this.state;
     const { params } = this.props.navigation.state;
@@ -94,9 +102,10 @@ class RequestScreen extends Component {
             </List>
 
             <List containerStyle={{ marginTop: 10 }}>
-              <ListItem title={'차량 정보'} onPress={() => alert('차량 정보')} />
-              <ListItem title={'카드 정보'} />
-              <ListItem title={'옵션'} />
+              <ListItem title={'차량 정보        기아 K5 흰색'} onPress={() => alert('차량 정보')} />
+              <ListItem title={'카드 정보        신한 2397'} />
+              <ListItem title={'옵션                세차, 주유'} />
+              <ListItem title={'가격(₩)           30,000'} />
             </List>
             <View />
           </View>
@@ -105,7 +114,7 @@ class RequestScreen extends Component {
             raised
             large
             title={'요청하기'}
-            onPress={() => this.progressRef.show()}
+            onPress={() => this.onRequest()}
           />
         </View>
 
